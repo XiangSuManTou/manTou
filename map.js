@@ -1,5 +1,6 @@
 (function(){
   window.Map = function(mapCode){
+    this.gameBurr=false;
     this.Map=[
       [0,0,0,0,0,0,0,0,0,0,0,0],
       [0,0,0,0,0,0,0,0,0,0,0,0],
@@ -56,19 +57,67 @@
         }else if(game.during<5){
           game.figure+=400
         }
-        console.log(game.during)
+        // console.log(game.during)
       }
     }
   },
   Map.prototype.gameOver= function(){
     // console.log(game.col)
+    var date=new Date();
+    var dateTime=date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate()+" "+date.getHours()+":"+date.getHours()+":"+date.getSeconds();
     for(var i=0;i<game.col-1;i++){
-      if(this.Map[1][i]!=0){
-        game.gameDate=[game.figure]
-        console.log(game.gameDate)
+      if(this.Map[0][i]!==0){
         clearInterval(game.timer);
-        alert('Game Over');
+        window.Fu();
+        game.map.gameBurr=true
+        }
       }
-    }
+      if(game.map.gameBurr==true){
+        var result = confirm( "Game Over，Re a Game?" );
+        if ( result ) {
+          game.clearMap();
+          document.getElementById("begin").removeAttribute("disabled");
+          document.getElementById("begin").innerHTML="开始游戏"
+          window.userFigure.push({
+            userName:window.username,
+            gameFigure:game.figure,
+            dateTime:dateTime,
+            })
+            window.saveDate();
+            window.math();
+          // console.log(window)
+          } else {
+      // the user clicked cancel or closed the confirm dialog.  
+            window.userFigure.push({
+            userName:window.username,
+            gameFigure:game.figure,
+            dateTime:dateTime,
+            })
+            // console.log(window.userName,game.figure,dateTime);
+            window.saveDate();
+            // console.log(localStorage.userFigure,window.userFigure);
+            alert("游戏结束"+"\n"+window.username+"\n"+"得分:"+game.figure+"!"+"\n"+"对了悄悄告诉你z键可以往上走，没想到把hh")
+            game.clearMap();
+            window.Fu();
+            document.getElementById("begin").removeAttribute("disabled");
+            document.getElementById("begin").innerHTML="开始游戏"
+            // this.userFigure.push({
+            //   userName:this.user,
+            //   gameFigure:game.figure,
+            //   dateTime:this.dateTime,
+            // })
+            window.math();
+          }
+    }},
+  Map.prototype.turnT=function(){
+        if(game.uu==false){
+          game.uu=!game.uu;
+        }else if(game.uu==true){
+          game.uu=false;
+        }
   }
+  Map.prototype.He=function(){
+    // console.log("action")
+  }
+  
 })()
