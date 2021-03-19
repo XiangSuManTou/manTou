@@ -13,6 +13,7 @@
     this.code = this.allCode[this.codeRil];
     this.row=0;
     this.col=4;
+    this.Ptwo=1;
     // console.log(this.code)
   }
   //地图
@@ -45,6 +46,8 @@
   //地图板块变化
   Block.prototype.downChange=function(){
     // console.log(game.map.Map[5][6])
+    // console.log(game.uu)
+    if(game.uu==true){
     if(this.change(this.row+1,this.col)){
       // console.log(this.change(this.row+1,this.col))
       this.row++;
@@ -54,6 +57,7 @@
       game.block = game.blcokArit;
       game.blcokArit= new Block;
       this.renderMap();
+    }
     }
   },
     Block.prototype.renderMap = function(){
@@ -78,13 +82,21 @@
       Block.prototype.changeRight = function(){
       // console.log("hello")
       if(this.change(this.row,this.col+1)){
-        // if(this.col!=9){
-        //   console.log(this.col)
-        //   this.col++;
-        // }
         this.col++;
       }
       },
+      //块级快快进
+      Block.prototype.changeDown = function(){
+        if(this.change(this.row+1,this.col)){
+          this.row++;
+        }
+      }
+      //作弊神器
+      Block.prototype.changeUp = function(){
+        if(this.change(this.row-1,this.col)){
+          this.row--;
+        }
+      }
      //块级位置迅速下降
       Block.prototype.quickDown = function(){
       // console.log("hello")

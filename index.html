@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" οnmοuseup=document.selection.empty() οncοntextmenu="return false" onselectstart="return false" οndragstart="return false" onbeforecopy="return false" οncοpy=document.selection.empty() οnselect=document.selection.empty()
+>
 <head>
-  <meta charset="UTF-8" ttp-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <meta charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="index" href="index.html">
-  <link rel="img" href="bgOne.jpeg">
-  <title>Document</title>
+  <link  rel="shortcut icon" href="bitbug_favicon.ico" type="favicon">
+  <script src="jquery-1.4.1.js"></script>
+<script src="blockModule-json.js"></script>
+<script src="Eluosi.js"></script>
+<script src="block.js"></script>
+<script src="map.js"></script>
+<script src="sendJson.js"></script>
+  <title>俄罗斯方块</title>
 </head>
 <style>
   *{
@@ -14,7 +20,7 @@
     padding: 0;
   }
   body{
-    background-image: url("bgOne.jpeg");
+    background-image: url("po1.jpg");
     background-size: cover;
     background-size:100%;
   }
@@ -28,7 +34,7 @@
     top:120px;
   }
   td{
-    border: 1px solid rgba(255, 255, 255, 0.548);
+    border: 1px solid rgba(139, 209, 255, 0.788);
     width: 25px;
     height: 25px;
   }
@@ -58,19 +64,140 @@
     top: 250px;
     left: 30%;
   }
+  .buttonAir{
+    width: 58px;
+    position: absolute;
+    top: 28%;
+    right: 34%;
+    border-radius: 75%;
+    text-indent: 100px;
+    flex-direction:row;
+  }
+  .buttonAir button{
+    color:  rgb(255, 224, 177);
+  }
+  .readMsg{
+    position: absolute;
+    text-indent: 50px;
+    right: 4%;
+    top: 10%;
+    color: rgb(238, 252, 47);
+  }
+  .userMsg{
+    position:absolute;
+    right: 280px;
+    top: 35%;
+    color: rgb(53, 181, 255);
+    font-size: 20px;
+  }
+  .userMsg input{
+    background: rgba(9, 59, 124, 0.055);
+    outline:invert;
+    border:1px solid rgba(53, 181, 255, 0.555); ;
+    color:rgb(238, 252, 47);
+    padding: 3px 0px 0px 0px;
+  }
+  .userFigure{
+    position:absolute;
+    left: 58px;
+    top: 10%;
+    font-size: 18px;
+    color: rgb(53, 181, 255);
+  }
+  .userFigure div::-webkit-scrollbar{
+    width: 5px;
+    height: 1px;
+  }
+  .DaoHang{
+    top: 0px;
+    position: absolute;;
+    width: 100%;
+    height: 50px;
+    background-color: rgba(144, 72, 185, 0.356);
+  }
+  .clearFigure{
+    position: absolute;
+    bottom:400px;
+    right: 500px;
+    border: 0px solid beige;
+    color:beige ;
+    background-color: rgba(79, 104, 243, 0.226);
+  }
+  .clearFigureBox{
+    position: absolute;
+    bottom:340px;
+    right: 260px;
+    color:beige;
+
+  }
 </style>
-<script src="jquery-1.4.1.js"></script>
-<script src="blockModule-json.js"></script>
-<script src="Eluosi.js"></script>
-<script src="block.js"></script>
-<script src="map.js"></script>
-<!--  <script src="https://github.com/XiangSuManTou/manTou/blob/main/Eluosi.js"></script> -->
+
 <body>
   <script>
-    var game = new Game(); 
+    this.row=20;
+    this.col=12;
+    //制作地图
+    var $table=$("<table></table>")
+    for(var i=0; i<this.row;i++){
+      var $tr=$("<tr></tr>")
+      for(var j=0;j<this.col;j++){
+        var $td=$("<td></td>")
+        $td.appendTo($tr)
+      }
+      $tr.appendTo($table)
+    }
+    $table.appendTo("body")
+    //制作预览窗
+    var $table=$("<table1 class='tab1'></table1>")
+    for(var i=0; i<4;i++){
+      var $tr=$("<tr></tr>")
+      for(var j=0;j<4;j++){
+        var $td=$("<td></td>")
+        $td.appendTo($tr)
+      }
+      $tr.appendTo($table)
+    }
+    $table.appendTo("body")
+    //初始值
+    this.userFigure =localStorage.userFigure?JSON.parse(localStorage.userFigure):[];
   </script>
+  <div class="DaoHang">
+
+  </div>
   <div>
     <h3 id="figure">分数:0</h3>
+  </div>
+  <div class="buttonAir">
+    <button id="begin" style="background-color:  rgb(15, 94, 158); position: relative;left: -99px; top: -7px; "onclick="buttonBegin()">开始游戏</button>
+    <button  style="background-color:  rgb(15, 94, 158);" onclick="over()">结束游戏</button>
+  </div>
+  <!-- //介绍框 -->
+  <div class="readMsg">
+    <p>游戏名：俄罗斯方块</p> <br>
+    <p>玩法：↑ 键 切换方向，← → 键 控制方向，shift 键 快速下落，p 键暂停，</p>
+    <p>  ↓  键快进。</p>
+    <p>暂时只是单机游戏，并不能与其他玩家数据共享</p>
+    <p>👇点这里开始游戏，记得昵称要填噢🥺</p>
+  </div>
+  <div class="userMsg"> 
+    请输入玩家昵称:<input id="userName"type="text" value="">
+  </div>
+  <div class="userFigure">
+    <div id="GameUser" style="position: relative;  overflow-y: auto;height: 300px; width: 600px;">
+    </div>
+  </div>
+  <button class="clearFigure" onclick="clareFigure()">清除游戏数据</button>
+  <div class="clearFigureBox">
+    <p>👆 点击帮你清除你的战绩,刷新页面就好了😘</p>
+    <p>若想和本小白交流感情,可加我Q:1633024048</p>
+  </div>
+  <script>
+    this.math();
+  </script>
+  <div>
+    <audio autoplay loop>
+      <source src="谢春花 - 陪在你左右.mp3">
+    </audio>
   </div>
 </body>
 </html>
